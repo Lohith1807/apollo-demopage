@@ -75,11 +75,18 @@ const app = express();
 const ensureDB = async (req, res, next) => {
     try {
         if (mongoose.connection.readyState < 1) {
-            await connectDB();
+            const conn = await connectDB();
+            if (!conn) {
+                return res.status(500).json({
+                    success: false,
+                    message: 'Database connection failed. Please check MONGODB_URI and Network Access (Whitelist 0.0.0.0/0).'
+                });
+            }
         }
         next();
     } catch (err) {
-        res.status(500).json({ success: false, message: 'Database connection failed' });
+        console.error('ensureDB Error:', err);
+        res.status(500).json({ success: false, message: 'Internal server error during DB connection' });
     }
 };
 
