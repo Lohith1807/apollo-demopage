@@ -8,14 +8,10 @@ const router = express.Router();
 
 router.use(protect);
 
-/**
- * 1. GET BILL (Student view)
- */
+
 router.get('/bill/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
-        // Logic: Find latest released bill or specific semester? 
-        // For simplicity: Find current pending bill
         const bill = await StudentFeeRecord.findOne({ student: userId })
             .populate('feeStructure')
             .sort({ semesterNumber: -1 });
@@ -27,10 +23,7 @@ router.get('/bill/:userId', async (req, res) => {
     }
 });
 
-/**
- * 2. RELEASE FEE (HR/Finance only)
- * Bulk release for a department/batch
- */
+
 router.post('/release-batch', authorize(['finance', 'hr', 'registrar']), async (req, res) => {
     try {
         const { studentIds, targetSemester } = req.body;
@@ -49,13 +42,10 @@ router.post('/release-batch', authorize(['finance', 'hr', 'registrar']), async (
     }
 });
 
-/**
- * 3. PROCESS PAYMENT (Simulated Gateway)
- */
+
 router.post('/pay', async (req, res) => {
     try {
         const { feeRecordId, amount, method } = req.body;
-        // In real world, verify with gateway first
         const transactionId = 'TXN_' + Math.random().toString(36).substr(2, 9).toUpperCase();
 
         const result = await FinanceService.processPayment(

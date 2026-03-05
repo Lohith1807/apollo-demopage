@@ -42,7 +42,6 @@ export default function Login() {
         fetchHierarchy();
     }, []);
 
-    // Selection cascade (Derived State)
     const uni = hierarchy.find(u => u._id === formData.university);
     const schools = uni?.schools || [];
 
@@ -56,12 +55,8 @@ export default function Login() {
         e.preventDefault();
         try {
             if (isLogin) {
-                // IMPORTANT: Do NOT send 'role' in the login payload.
-                // The backend checks role only if provided. If we send 'student' (default state)
-                // but logging in as 'admin', it fails.
                 await login({ email: formData.email, password: formData.password });
             } else {
-                // For signup, we can default to student or pending
                 await signup({ ...formData, role: 'student' });
                 setSignupSuccess(true);
             }
@@ -117,7 +112,6 @@ export default function Login() {
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div className={isLogin ? "space-y-3" : "grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4"}>
 
-                                {/* Common Fields */}
                                 <div className="space-y-1.5">
                                     <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email / ID</label>
                                     <div className="relative group">

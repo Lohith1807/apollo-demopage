@@ -6,17 +6,14 @@ export const authorize = (roles = [], options = {}) => {
 
         const { role, school, department } = req.user;
 
-        // Super Admin (Registrar) has access to everything
         if (role === 'registrar') {
             return next();
         }
 
-        // Check if role is allowed
         if (roles.length && !roles.includes(role)) {
             return res.status(403).json({ success: false, message: 'Unauthorized: Role not permitted' });
         }
 
-        // Multi-tenant scope check
         const { scopeSchool, scopeDepartment } = options;
 
         if (scopeSchool && school?.toString() !== req.params.schoolId) {

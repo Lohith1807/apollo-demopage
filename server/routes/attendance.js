@@ -6,7 +6,6 @@ import { authorize } from '../middleware/rbac.js';
 
 const router = express.Router();
 
-// REPORT route — MUST be before /:userId to avoid being caught by the catch-all param
 router.get('/report', protect, authorize(['admin', 'teacher', 'dean', 'registrar']), async (req, res) => {
     try {
         const { departmentId, batchId, subjectId, from, to } = req.query;
@@ -32,11 +31,9 @@ router.get('/report', protect, authorize(['admin', 'teacher', 'dean', 'registrar
     }
 });
 
-// 1. GET ATTENDANCE (Personal) - Scoped by User ID
 router.get('/:userId', protect, async (req, res) => {
     try {
         const userId = req.params.userId;
-        // Ensure user is fetching their own data or is higher role
         if (req.user._id.toString() !== userId && req.user.role === 'student') {
             return res.status(403).json({ message: 'Access denied' });
         }
@@ -65,7 +62,6 @@ router.get('/:userId', protect, async (req, res) => {
     }
 });
 
-// 2. CREATE / UPDATE SESSION (Relational & Scoped)
 router.post('/mark', protect, authorize(['teacher', 'dean', 'registrar']), async (req, res) => {
     const { departmentId, batchId, subjectId, dateStr, time, instructorId, records } = req.body;
 

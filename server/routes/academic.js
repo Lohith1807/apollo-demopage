@@ -7,9 +7,7 @@ import { protect } from '../middleware/auth.js';
 const router = express.Router();
 router.use(protect);
 
-/**
- * 1. GET Current Semester Subjects
- */
+
 router.get('/subjects', async (req, res) => {
     try {
         const student = await User.findById(req.user.id);
@@ -23,9 +21,7 @@ router.get('/subjects', async (req, res) => {
     }
 });
 
-/**
- * 2. PROMOTE (Self-service if eligible)
- */
+
 router.post('/promote', async (req, res) => {
     try {
         const result = await AcademicService.promoteStudent(req.user.id);

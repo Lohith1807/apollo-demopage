@@ -77,7 +77,6 @@ export default function Attendance() {
         fetchAttendance();
     }, [user]);
 
-    // Grouping logic for subjects
     const subjectStats = attendanceData.reduce((acc, curr) => {
         if (!acc[curr.subject]) {
             acc[curr.subject] = { attended: 0, total: 0 };
@@ -111,15 +110,12 @@ export default function Attendance() {
 
     return (
         <div className="max-w-7xl mx-auto space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-            {/* Header / Top Stats Section - Ultra Compact */}
             <div className="bg-white p-4 rounded-[2rem] border border-slate-200 shadow-sm relative overflow-hidden">
                 <div className="flex flex-col lg:flex-row items-center gap-6">
-                    {/* Circle Chart - Smaller for space */}
                     <div className="shrink-0 scale-75 -my-4">
                         <AttendanceDoughnut percentage={overallPercentage} />
                     </div>
 
-                    {/* Stats Row - All in one compact line */}
                     <div className="flex-1 w-full">
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
                             <div>
@@ -177,7 +173,6 @@ export default function Attendance() {
                 </div>
             </div>
 
-            {/* Subject Table (Image 1 style) */}
             <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
@@ -238,7 +233,6 @@ export default function Attendance() {
                 </div>
             </div>
 
-            {/* Regulatory Notice */}
             <div className="bg-slate-900 rounded-3xl p-6 text-white flex items-center justify-between shadow-xl relative overflow-hidden">
                 <div className="relative z-10 flex items-center gap-6">
                     <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center border border-white/20">

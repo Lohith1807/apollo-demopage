@@ -21,6 +21,5 @@ export const protect = async (req, res, next) => {
         }
     }
 
-    // Only reached if no Bearer token was found at all
     return res.status(401).json({ message: 'Not authorized, no token' });
 };

@@ -9,11 +9,9 @@ import { authorize } from '../middleware/rbac.js';
 
 const router = express.Router();
 
-// Apply protection to all admin routes
 router.use(protect);
 router.use(authorize(['admin', 'dean', 'registrar']));
 
-// 1. GET Scoped Stats
 router.get('/stats', async (req, res) => {
     try {
         const { universityId, schoolId } = req.query;
@@ -37,7 +35,6 @@ router.get('/stats', async (req, res) => {
     }
 });
 
-// 2. GET SUBJECTS (Scoped)
 router.get('/subjects', async (req, res) => {
     try {
         const { departmentId } = req.query;
@@ -49,22 +46,18 @@ router.get('/subjects', async (req, res) => {
     }
 });
 
-// 3. APPROVAL LOGIC (Multi-tenant)
 router.post('/approve', async (req, res) => {
     const { userId, universityId, schoolId, departmentId, batchId } = req.body;
     try {
         const student = await User.findById(userId);
         if (!student) return res.status(404).json({ message: 'User not found' });
 
-        // Robust Roll Number Generation logic
-        // Using a combination of dynamic code or random sequence
         const rand = Math.floor(1000 + Math.random() * 9000);
         const rollNo = `TAU${new Date().getFullYear()}${rand}`;
 
         student.status = 'approved';
         student.role = 'student';
         student.rollNo = rollNo;
-        // Assign to provided hierarchy or keep current
         if (universityId) student.university = universityId;
         if (schoolId) student.school = schoolId;
         if (departmentId) student.department = departmentId;
@@ -77,7 +70,6 @@ router.post('/approve', async (req, res) => {
     }
 });
 
-// 4. DIRECTORY (Scoped)
 router.get('/directory', async (req, res) => {
     try {
         const { role, universityId, schoolId, departmentId } = req.query;
@@ -99,7 +91,6 @@ router.get('/directory', async (req, res) => {
     }
 });
 
-// 5. EXAM MANAGEMENT
 router.get('/exams', async (req, res) => {
     try {
         const { schoolId } = req.query;
@@ -130,7 +121,6 @@ router.delete('/exams/:id', async (req, res) => {
     }
 });
 
-// 6. STUDENT UPDATE
 router.put('/student/:id', async (req, res) => {
     try {
         const updated = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -141,7 +131,6 @@ router.put('/student/:id', async (req, res) => {
     }
 });
 
-// 7. FACULTY MANAGEMENT
 router.post('/faculty', async (req, res) => {
     try {
         const faculty = new User({ ...req.body, role: 'teacher', status: 'approved' });
@@ -163,7 +152,6 @@ router.put('/faculty', async (req, res) => {
     }
 });
 
-// 8. SUBJECT MANAGEMENT
 router.put('/subjects', async (req, res) => {
     try {
         const { subjects } = req.body;
@@ -181,7 +169,6 @@ router.put('/subjects', async (req, res) => {
     }
 });
 
-// 9. REJECT REGISTRATION
 router.delete('/approve/:id', async (req, res) => {
     try {
         const deleted = await User.findByIdAndDelete(req.params.id);

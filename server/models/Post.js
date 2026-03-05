@@ -14,7 +14,6 @@ const postSchema = new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     authorName: { type: String }, // redundant for display performance
 
-    // Scoping
     scope: { type: String, enum: ['global', 'school', 'department'], default: 'global' },
     university: { type: mongoose.Schema.Types.ObjectId, ref: 'University' },
     school: { type: mongoose.Schema.Types.ObjectId, ref: 'School' },

@@ -60,7 +60,6 @@ export default function CourseCatalog() {
         setSubjects(newSubjects);
     };
 
-    // Filter subjects for students
     const displayedSubjects = React.useMemo(() => {
         if (!user || user.role !== 'student') return subjects;
 
@@ -69,10 +68,6 @@ export default function CourseCatalog() {
 
         if (!dept || !subjects[dept]) return {};
 
-        // If user has a specialization, show only that key.
-        // If spec is not found (or undefined), we might just show the whole department? 
-        // User requested "only his course related information". 
-        // Assuming if spec exists in data, we filter by it.
 
         if (spec && subjects[dept][spec]) {
             return {
@@ -82,7 +77,6 @@ export default function CourseCatalog() {
             };
         }
 
-        // Fallback: show only the user's department
         return { [dept]: subjects[dept] };
     }, [subjects, user]);
 
@@ -171,7 +165,6 @@ export default function CourseCatalog() {
                                                             <span className="text-[9px] font-black text-apollo-red bg-red-50 px-2 py-0.5 rounded-full">8 ITEMS</span>
                                                         </div>
 
-                                                        {/* Theory Subjects */}
                                                         <div className="space-y-1.5 mb-4">
                                                             <div className="flex items-center justify-between">
                                                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">
@@ -197,7 +190,6 @@ export default function CourseCatalog() {
                                                             </div>
                                                         </div>
 
-                                                        {/* Labs */}
                                                         <div className="space-y-1.5">
                                                             <div className="flex items-center justify-between">
                                                                 <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1">

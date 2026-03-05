@@ -18,7 +18,6 @@ const feeStructureSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-// Unique structure per scope and semester
 feeStructureSchema.index({ university: 1, school: 1, department: 1, batch: 1, semesterNumber: 1 }, { unique: true });
 
 export default mongoose.model('FeeStructure', feeStructureSchema);

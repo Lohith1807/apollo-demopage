@@ -17,14 +17,12 @@ const cleanAndSeed = async () => {
         await mongoose.connect(mongoUri);
         console.log('Connected.');
 
-        // 1. Remove all details!
         console.log('Wiping old logins and details...');
         await User.deleteMany({});
         await AttendanceSession.deleteMany({});
         await ExamResult.deleteMany({});
         console.log('Database wiped clean.');
 
-        // 2. Restructure and correct retrieval data setups
         console.log('Creating clean restructured users...');
         const users = [
             {
@@ -70,7 +68,6 @@ const cleanAndSeed = async () => {
             }
         ];
 
-        // Seed 10 structured students for testing attendance
         for (let i = 2; i <= 10; i++) {
             const rollNo = `1224115102${i.toString().padStart(2, '0')}`;
             users.push({
@@ -88,7 +85,6 @@ const cleanAndSeed = async () => {
             });
         }
 
-        // `User.create` runs the `pre('save')` hook, hashing passwords securely!
         await User.create(users);
         console.log('Successfully inserted structured records!');
 

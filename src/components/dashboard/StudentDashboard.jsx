@@ -44,7 +44,6 @@ const StudentDashboard = ({ attendance = [], subjects = {}, user = {} }) => {
         fetchResults();
     }, [user]);
 
-    // Determine the active academic state with deep defaults
     const currentSem = user?.semester || 'Sem 1';
     const currentSection = user?.section || 'Section A';
     const branchKey = user?.branch || user?.department || 'CSE';
@@ -54,7 +53,6 @@ const StudentDashboard = ({ attendance = [], subjects = {}, user = {} }) => {
         ? ((attendance.filter(a => a.status?.toLowerCase() === 'present').length / attendance.length) * 100).toFixed(1) + '%'
         : '0%';
 
-    // CGPA Calculation Logic
     const getGradePoint = (grade) => {
         const points = { 'O': 10, 'A+': 10, 'A': 9, 'B+': 8, 'B': 7, 'C': 6, 'P': 5, 'F': 0 };
         return points[grade] || 0;
@@ -63,12 +61,10 @@ const StudentDashboard = ({ attendance = [], subjects = {}, user = {} }) => {
     const weightedPoints = results.reduce((sum, res) => sum + (getGradePoint(res.grade) * (res.credits || 3)), 0);
     const cgpa = totalCredits > 0 ? (weightedPoints / totalCredits).toFixed(2) : '0.00';
 
-    // Drill down: Branch -> Specialization -> Semester
     const branchData = subjects[branchKey] || {};
     const specData = branchData[specKey] || {};
     const semData = specData[currentSem] || { theory: [], labs: [] };
 
-    // Combine theory and labs for the display list
     const theorySubjects = semData.theory || [];
     const labSubjects = semData.labs || [];
     const allSubjects = [...theorySubjects, ...labSubjects];
@@ -84,7 +80,6 @@ const StudentDashboard = ({ attendance = [], subjects = {}, user = {} }) => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in duration-500">
             <div className="lg:col-span-8 space-y-6">
-                {/* Academic Context Bar */}
                 <div className="bg-slate-900 rounded-2xl p-4 flex items-center justify-between text-white shadow-xl">
                     <div className="flex items-center gap-4">
                         <div className="px-3 py-1 bg-white/10 rounded-lg border border-white/20">

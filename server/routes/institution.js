@@ -8,7 +8,6 @@ import { authorize } from '../middleware/rbac.js';
 
 const router = express.Router();
 
-// Get Full Hierarchy (Public/Onboarding)
 router.get('/hierarchy', async (req, res) => {
     try {
         const hierarchy = await University.find().populate({
@@ -26,7 +25,6 @@ router.get('/hierarchy', async (req, res) => {
     }
 });
 
-// Registrar Level Access
 router.post('/university', protect, authorize(['registrar']), async (req, res) => {
     try {
         const university = new University(req.body);
@@ -47,7 +45,6 @@ router.post('/school', protect, authorize(['registrar']), async (req, res) => {
     }
 });
 
-// Dean Level Access
 router.post('/department', protect, authorize(['registrar', 'dean']), async (req, res) => {
     try {
         const dept = new Department(req.body);

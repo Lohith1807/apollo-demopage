@@ -12,7 +12,6 @@ const paymentTransactionSchema = new mongoose.Schema({
     status: { type: String, enum: ['Success', 'Failed', 'Pending'], default: 'Pending' },
     paidAt: { type: Date, default: Date.now },
 
-    // Audit Trail
     university: { type: mongoose.Schema.Types.ObjectId, ref: 'University' },
     school: { type: mongoose.Schema.Types.ObjectId, ref: 'School' }
 });

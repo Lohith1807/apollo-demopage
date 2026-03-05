@@ -39,7 +39,6 @@ export default function Results() {
             if (!user?._id) return;
             try {
                 const { data } = await getResults(user._id);
-                // Group by semester
                 const grouped = {};
                 data.forEach(res => {
                     const sem = res.semester || 'Unknown Sem';
@@ -47,7 +46,6 @@ export default function Results() {
                     grouped[sem].push(res);
                 });
 
-                // Sort semesters (Sem 1, Sem 2...)
                 const sortedKeys = Object.keys(grouped).sort((a, b) => {
                     const numA = parseInt(a.replace(/\D/g, '')) || 0;
                     const numB = parseInt(b.replace(/\D/g, '')) || 0;
@@ -68,7 +66,6 @@ export default function Results() {
         fetchResults();
     }, [user]);
 
-    // CGPA Calculation (Overall)
     const getGradePoint = (grade) => {
         const points = { 'O': 10, 'A+': 10, 'A': 9, 'B+': 8, 'B': 7, 'C': 6, 'P': 5, 'F': 0 };
         return points[grade] || 0;
@@ -79,7 +76,6 @@ export default function Results() {
     const weightedPoints = allResults.reduce((sum, res) => sum + (getGradePoint(res.grade) * (res.credits || 3)), 0);
     const cgpa = totalCredits > 0 ? (weightedPoints / totalCredits).toFixed(2) : '0.00';
 
-    // SGPA Calculation for Selected Sem
     const currentSemResults = groupedResults[selectedSem] || [];
     const semCredits = currentSemResults.reduce((sum, res) => sum + (res.credits || 3), 0);
     const semWeightedPoints = currentSemResults.reduce((sum, res) => sum + (getGradePoint(res.grade) * (res.credits || 3)), 0);
@@ -119,7 +115,6 @@ export default function Results() {
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-6">
-                        {/* Semester Tabs */}
                         <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
                             {Object.keys(groupedResults).map(sem => (
                                 <button
@@ -160,7 +155,6 @@ export default function Results() {
                     </div>
 
                     <div className="space-y-6">
-                        {/* Sidebar Analysis - Kept Static for Demo or could be dynamic */}
                         <div className="bg-slate-900 text-white rounded-3xl p-8 relative overflow-hidden shadow-xl">
                             <div className="relative z-10">
                                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Performance Analysis</p>
@@ -184,7 +178,6 @@ export default function Results() {
                             </h4>
                             <div className="space-y-3">
                                 {Object.keys(groupedResults).map(sem => {
-                                    // Calc SGPA for this sem locally
                                     const sRes = groupedResults[sem];
                                     const sCred = sRes.reduce((sum, res) => sum + (res.credits || 3), 0);
                                     const sPts = sRes.reduce((sum, res) => sum + (getGradePoint(res.grade) * (res.credits || 3)), 0);

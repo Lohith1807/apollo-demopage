@@ -12,7 +12,6 @@ const API = axios.create({
     baseURL: getBaseUrl(),
 });
 
-// Add a request interceptor to attach JWT
 API.interceptors.request.use((config) => {
     try {
         const saved = localStorage.getItem('user');
@@ -26,7 +25,6 @@ API.interceptors.request.use((config) => {
     return config;
 });
 
-// Auto-logout on invalid/expired tokens
 API.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -34,7 +32,6 @@ API.interceptors.response.use(
             const saved = localStorage.getItem('user');
             if (saved) {
                 const user = JSON.parse(saved);
-                // If using a mock token, force re-login
                 if (user.token && user.token.startsWith('mock_')) {
                     console.warn('Mock token detected. Forcing re-login...');
                     localStorage.removeItem('user');
@@ -60,7 +57,6 @@ export const batchViewResults = (params) => API.post('/results/batch-view', para
 export const batchUpdateMarks = (data) => API.post('/results/batch-update', data);
 export const getStudents = (params) => API.get('/admin/directory', { params: { ...params, role: 'student' } });
 
-// Admin / Registrar Actions
 export const getAdminStats = (params) => API.get('/admin/stats', { params });
 export const getDirectory = (params) => API.get('/admin/directory', { params });
 export const getPendingRegistrations = () => API.get('/admin/directory?status=pending');
@@ -77,17 +73,14 @@ export const createFaculty = (data) => API.post('/admin/faculty', data);
 export const updateFaculty = (data) => API.put('/admin/faculty', data);
 export const getAttendanceReport = (params) => API.get('/attendance/report', { params });
 
-// Institution / Multi-tenant Hierarchy
 export const getHierarchy = () => API.get('/institution/hierarchy');
 export const createUniversity = (data) => API.post('/institution/university', data);
 export const createSchool = (data) => API.post('/institution/school', data);
 export const createDepartment = (data) => API.post('/institution/department', data);
 export const createBatch = (data) => API.post('/institution/batch', data);
 
-// Posts / Feed
 export const getPosts = (schoolId) => API.get(`/posts${schoolId ? `?schoolId=${schoolId}` : ''}`);
 export const createPost = (data) => {
-    // Check if data is already FormData (it should be for image upload)
     if (data instanceof FormData) {
         return API.post('/posts', data, {
             headers: { 'Content-Type': 'multipart/form-data' }

@@ -7,9 +7,7 @@ import User from '../models/User.js';
 import mongoose from 'mongoose';
 
 class FinanceService {
-    /**
-     * Calculates scholarship percentage based on latest semester results
-     */
+    
     async calculateScholarship(studentId, semesterNumber) {
         const results = await ExamResult.find({ student: studentId, semester: semesterNumber });
         if (results.length === 0) return 0;
@@ -20,7 +18,6 @@ class FinanceService {
 
         const student = await User.findById(studentId);
 
-        // Find matching rule (ordered by priority/minPercentage)
         const rule = await ScholarshipRule.findOne({
             university: student.university,
             minPercentage: { $lte: percentage },
@@ -31,9 +28,7 @@ class FinanceService {
         return rule ? rule.discountPercentage : 0;
     }
 
-    /**
-     * HR releases the fee record for a student for the upcoming semester
-     */
+    
     async generateFeeRecord(studentId, targetSemester) {
         const student = await User.findById(studentId);
 
@@ -67,9 +62,7 @@ class FinanceService {
         return feeRecord;
     }
 
-    /**
-     * Processes a payment and updates student eligibility atomically
-     */
+    
     async processPayment(feeRecordId, amount, method, transactionId) {
         const session = await mongoose.startSession();
         session.startTransaction();
@@ -77,7 +70,6 @@ class FinanceService {
             const record = await StudentFeeRecord.findById(feeRecordId).session(session);
             if (!record) throw new Error('Fee record not found');
 
-            // 1. Create Transaction
             const transaction = await PaymentTransaction.create([{
                 feeRecord: feeRecordId,
                 student: record.student,
@@ -87,7 +79,6 @@ class FinanceService {
                 status: 'Success'
             }], { session });
 
-            // 2. Update Record
             record.paidAmount += amount;
             record.dueAmount -= amount;
             if (record.dueAmount <= 0) {
@@ -98,7 +89,6 @@ class FinanceService {
             }
             await record.save({ session });
 
-            // 3. Update Student Eligibility if fully paid
             if (record.status === 'Paid') {
                 await User.findByIdAndUpdate(record.student, { isEligibleForNextSemester: true }, { session });
             }

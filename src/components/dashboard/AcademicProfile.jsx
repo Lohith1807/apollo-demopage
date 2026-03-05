@@ -82,7 +82,6 @@ export default function AcademicProfile() {
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500 pb-20">
-            {/* Header: Personal Info & Identity */}
             <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm overflow-hidden relative group">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-apollo-red/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
                 <div className="flex flex-col md:flex-row gap-8 items-center md:items-start relative z-10">
@@ -127,7 +126,6 @@ export default function AcademicProfile() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Column 1: Personal Details */}
                 <div className="lg:col-span-1 space-y-6">
                     <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
@@ -158,9 +156,7 @@ export default function AcademicProfile() {
                     </div>
                 </div>
 
-                {/* Column 2 & 3: Academic Stats & Identity */}
                 <div className="lg:col-span-2 space-y-8">
-                    {/* Stats Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <ProfileStatCard label="Computed CGPA" value={`${cgpa} / 10`} sub="Real-time Assessment" icon={GraduationCap} color="bg-indigo-600" />
                         <ProfileStatCard label="Total Attendance" value={`${attendancePercent} %`} sub="Current Term" icon={BarChart3} color="bg-emerald-600" />
@@ -168,7 +164,6 @@ export default function AcademicProfile() {
                         <ProfileStatCard label="Registration" value="Verified" sub="No Backlogs" icon={Award} color="bg-amber-500" />
                     </div>
 
-                    {/* Academic Information Table */}
                     <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
                         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
                             <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Academic Information</h3>
@@ -204,7 +199,6 @@ export default function AcademicProfile() {
                         </div>
                     </div>
 
-                    {/* Academic Notifications Sidebar-style inside main */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="bg-red-50/50 p-6 rounded-3xl border border-red-100/50 flex gap-4">
                             <AlertCircle className="text-apollo-red shrink-0" size={20} />

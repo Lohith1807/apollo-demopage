@@ -5,14 +5,12 @@ const studentFeeRecordSchema = new mongoose.Schema({
     semesterNumber: { type: Number, required: true },
     feeStructure: { type: mongoose.Schema.Types.ObjectId, ref: 'FeeStructure', required: true },
 
-    // Financial Snapshots (immutable once released)
     totalBaseAmount: { type: Number, required: true },
     scholarshipPercentage: { type: Number, default: 0 },
     scholarshipAmount: { type: Number, default: 0 },
     lateFee: { type: Number, default: 0 },
     netPayable: { type: Number, required: true },
 
-    // Tracking
     paidAmount: { type: Number, default: 0 },
     dueAmount: { type: Number, required: true },
 
@@ -29,7 +27,6 @@ const studentFeeRecordSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-// Avoid duplicate records for same student/semester
 studentFeeRecordSchema.index({ student: 1, semesterNumber: 1 }, { unique: true });
 
 export default mongoose.model('StudentFeeRecord', studentFeeRecordSchema);

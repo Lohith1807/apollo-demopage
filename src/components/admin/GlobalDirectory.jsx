@@ -17,7 +17,6 @@ const EditUserModal = ({ user, type, onClose, onSuccess }) => {
     const handleSave = async () => {
         setLoading(true);
         try {
-            // For students we might need to nest personalInfo back
             const payload = type === 'students' ? {
                 name: formData.name,
                 email: formData.email,
@@ -320,7 +319,6 @@ export default function GlobalDirectory() {
                             </button>
                         </div>
 
-                        {/* Additional Filters */}
                         <div className="flex flex-wrap items-center gap-3">
                             <select
                                 value={fDept}

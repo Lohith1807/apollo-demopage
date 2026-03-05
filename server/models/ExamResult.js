@@ -4,7 +4,6 @@ const examResultSchema = new mongoose.Schema({
     student: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
 
-    // Scoping for fast retrieval
     university: { type: mongoose.Schema.Types.ObjectId, ref: 'University' },
     school: { type: mongoose.Schema.Types.ObjectId, ref: 'School' },
     department: { type: mongoose.Schema.Types.ObjectId, ref: 'Department' },

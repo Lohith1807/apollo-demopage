@@ -19,7 +19,6 @@ const attendanceSessionSchema = new mongoose.Schema({
     records: [attendanceRecordSchema]
 }, { timestamps: true });
 
-// Indexes for ultra-scalability
 attendanceSessionSchema.index({ department: 1, batch: 1, subject: 1, date: -1 });
 attendanceSessionSchema.index({ department: 1, batch: 1, subject: 1, dateStr: 1, time: 1 }, { unique: true });
 

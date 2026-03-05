@@ -5,7 +5,6 @@ const examSchema = new mongoose.Schema({
     title: { type: String, required: true },
     type: { type: String, enum: ['Internal', 'Semester', 'Practical', 'Others'], default: 'Semester' },
 
-    // Scoping
     university: { type: mongoose.Schema.Types.ObjectId, ref: 'University' },
     school: { type: mongoose.Schema.Types.ObjectId, ref: 'School' },
     department: { type: mongoose.Schema.Types.ObjectId, ref: 'Department' },

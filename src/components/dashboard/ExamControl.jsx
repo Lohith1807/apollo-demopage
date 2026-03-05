@@ -7,14 +7,12 @@ export default function ExamControl() {
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('entry'); // 'entry' or 'publish'
 
-    // Marks Entry State
     const [batch, setBatch] = useState('2024-2028');
     const [semester, setSemester] = useState('Sem 1');
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [marks, setMarks] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    // Publish State
     const [publishConfig, setPublishConfig] = useState({});
 
     useEffect(() => {
@@ -29,8 +27,6 @@ export default function ExamControl() {
         setLoading(true);
         try {
             const { data } = await getResults(selectedStudent);
-            // If no data, we might need to initialize 'marks' structure based on curriculum
-            // For this demo, let's just edit existing or add new rows if empty
             setMarks(data || []);
         } catch (e) {
             console.error(e);
@@ -44,7 +40,6 @@ export default function ExamControl() {
         let numValue = parseFloat(value);
         if (isNaN(numValue) || numValue < 0) numValue = 0;
 
-        // Validation limits
         if (field === 'internal' && numValue > 40) {
             alert("Internal marks cannot exceed 40");
             numValue = 40;
@@ -56,12 +51,10 @@ export default function ExamControl() {
 
         newMarks[index][field] = numValue;
 
-        // Auto calc total/grade?
         const int = parseFloat(newMarks[index].internal || 0);
         const ext = parseFloat(newMarks[index].external || 0);
         newMarks[index].total = int + ext;
 
-        // Simple grading logic
         if (newMarks[index].total >= 90) newMarks[index].grade = 'O';
         else if (newMarks[index].total >= 80) newMarks[index].grade = 'A+';
         else if (newMarks[index].total >= 70) newMarks[index].grade = 'A';
@@ -105,10 +98,7 @@ export default function ExamControl() {
     const fetchBatchStudentsAndMarks = async (sub) => {
         setLoading(true);
         try {
-            // 1. Get all students
             const { data: allStudents } = await getStudents();
-            // 2. Filter by subject batch/branch/sem
-            // Assuming getStudents returns a flat list now (after our admin.js fix)
             const filtered = allStudents.filter(s =>
                 s.batch === sub.batch &&
                 s.branch === sub.branch &&
@@ -116,14 +106,12 @@ export default function ExamControl() {
             );
             setBatchStudents(filtered);
 
-            // 3. Get existing marks
             const emails = filtered.map(s => s.email);
             const { data: existingMarks } = await import('../../services/api').then(m => m.batchViewResults({
                 students: emails,
                 subject: sub.subject
             }));
 
-            // 4. Initialize Data
             const initialData = {};
             filtered.forEach(s => {
                 const exist = existingMarks[s.email] || {};
@@ -150,7 +138,6 @@ export default function ExamControl() {
         let numValue = parseFloat(value);
         if (isNaN(numValue) || numValue < 0) numValue = 0;
 
-        // Validation limits
         if (field === 'internal' && numValue > 40) {
             alert("Internal marks cannot exceed 40");
             numValue = 40;
@@ -164,10 +151,8 @@ export default function ExamControl() {
             const studentData = { ...prev[email] };
             studentData[field] = numValue;
 
-            // Calc total
             studentData.total = (parseFloat(studentData.internal) || 0) + (parseFloat(studentData.external) || 0);
 
-            // Grade
             const t = studentData.total;
             if (t >= 90) studentData.grade = 'O';
             else if (t >= 80) studentData.grade = 'A+';
@@ -201,7 +186,6 @@ export default function ExamControl() {
         }
     };
 
-    // ... existing helpers ...
 
     return (
         <div className="space-y-6 animate-in fade-in duration-500 pb-20">
@@ -232,7 +216,6 @@ export default function ExamControl() {
 
             {activeTab === 'entry' && viewMode === 'class' && user.role === 'teacher' && (
                 <div className="space-y-8">
-                    {/* Class Selector / Header */}
                     <div className="flex items-center justify-between">
                         {selectedClassSubject ? (
                             <div className="flex items-center gap-4">
@@ -351,7 +334,6 @@ export default function ExamControl() {
 
             {activeTab === 'entry' && viewMode !== 'class' && (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Student Selector */}
                     <div className="bg-white rounded-3xl border border-slate-200 p-6 h-fit">
                         <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest mb-4">Select Student</h3>
                         <div className="space-y-4">
@@ -389,7 +371,6 @@ export default function ExamControl() {
                         </div>
                     </div>
 
-                    {/* Marks Editor */}
                     <div className="lg:col-span-2 bg-white rounded-3xl border border-slate-200 overflow-hidden min-h-[400px]">
                         <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                             <h3 className="text-xs font-black text-slate-800 uppercase tracking-[0.2em]">Grading Sheet</h3>
@@ -409,7 +390,6 @@ export default function ExamControl() {
                                 </div>
                                 <div className="space-y-2">
                                     {marks.filter(m => m.semester === semester).map((mark, idx) => {
-                                        // Teacher Restriction
                                         const isTeacher = user.role === 'teacher';
                                         const allowedSubjects = isTeacher ? (user.assignedSubjects?.map(s => s.subject) || []) : null;
                                         const isEditable = !isTeacher || (allowedSubjects && allowedSubjects.includes(mark.course));

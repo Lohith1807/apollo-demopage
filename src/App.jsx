@@ -12,7 +12,6 @@ import ExamControl from './components/dashboard/ExamControl';
 import Settings from './components/dashboard/Settings';
 import Attendance from './components/dashboard/Attendance';
 
-// Admin Modules
 import AdminApplications from './components/admin/Applications';
 import AdminCourseCatalog from './components/admin/CourseCatalog';
 import AdminAttendanceTracker from './components/admin/AttendanceTracker';

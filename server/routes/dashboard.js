@@ -5,7 +5,6 @@ import AttendanceSession from '../models/AttendanceSession.js';
 
 const router = express.Router();
 
-// Everyone
 router.get('/:role', protect, async (req, res) => {
     try {
         const userId = req.user.id;

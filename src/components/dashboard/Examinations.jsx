@@ -105,7 +105,6 @@ export default function Examinations() {
     const [showHallTicket, setShowHallTicket] = useState(null);
     const [curriculum, setCurriculum] = useState({});
 
-    // Create Form State
     const [newExam, setNewExam] = useState({
         type: 'Mid 1',
         batch: '2024-2028',
@@ -152,7 +151,6 @@ export default function Examinations() {
         });
     };
 
-    // Auto-populate subjects
     useEffect(() => {
         const isBulkType = ['Lab External', 'External Sem'].includes(newExam.type);
         if (isBulkType && newExam.semester && newExam.branch && curriculum[newExam.branch]) {
@@ -186,7 +184,6 @@ export default function Examinations() {
                 }
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [newExam.type, newExam.semester, newExam.branch, newExam.specialization]);
 
     const updateScheduleRow = (index, field, value) => {
@@ -268,7 +265,6 @@ export default function Examinations() {
                 </div>
             ) : (
                 <div className="space-y-6">
-                    {/* Warning Alert */}
                     <div className="bg-amber-50 border border-amber-200 rounded-3xl p-6 flex gap-5 items-start">
                         <div className="p-2 bg-amber-500 text-white rounded-lg shadow-lg shadow-amber-500/20"><ShieldAlert size={20} /></div>
                         <div className="flex-1">
@@ -313,7 +309,6 @@ export default function Examinations() {
                 </div>
             )}
 
-            {/* Create Exam Modal */}
             {showCreate && (
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-6" onClick={() => setShowCreate(false)}>
                     <div className="bg-white rounded-[32px] w-full max-w-4xl shadow-2xl max-h-[90vh] overflow-hidden flex flex-col" onClick={e => e.stopPropagation()}>

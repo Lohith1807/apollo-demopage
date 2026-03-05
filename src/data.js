@@ -2,7 +2,6 @@ export const buildDB = () => {
   const students = {};
   const users = [];
 
-  // helper to create 20 students for each class
   function addStudents(prefix, startNum) {
     for (let i = 0; i < 20; i++) {
       const num = startNum + i;
@@ -29,7 +28,6 @@ export const buildDB = () => {
   addStudents("CSE-B", 201);
   addStudents("CSE-C", 301);
 
-  // admin & teacher
   users.push({ id: 'admin', name: 'Aswath', email: 'admin@apollouniversity.edu.in', password: 'admin123', role: 'admin' });
   users.push({ id: 'teacher01', name: 'Prajith', email: 'teacher1@apollouniversity.edu.in', password: 'teacher123', role: 'teacher' });
 

@@ -7,11 +7,9 @@ import { authorize } from '../middleware/rbac.js';
 
 const router = express.Router();
 
-// GET PUBLISH STATUS — must be before /:userId catch-all
 router.get('/publish-status', protect, authorize(['coe', 'dean', 'registrar']), async (req, res) => {
     try {
         const configs = await ExamConfig.find({});
-        // Build a nested object: { batch: { semester: { published } } }
         const result = {};
         for (const config of configs) {
             const batchKey = config.batch?.toString() || 'unknown';
@@ -25,11 +23,9 @@ router.get('/publish-status', protect, authorize(['coe', 'dean', 'registrar']), 
     }
 });
 
-// BATCH VIEW RESULTS — must be before /:userId catch-all
 router.post('/batch-view', protect, authorize(['teacher', 'coe', 'dean', 'registrar']), async (req, res) => {
     try {
         const { students, subject } = req.body;
-        // students: array of email addresses; subject: subject name or ID
         const users = await User.find({ email: { $in: students } }, '_id email');
         const userMap = {};
         users.forEach(u => { userMap[u.email] = u._id; });
@@ -40,7 +36,6 @@ router.post('/batch-view', protect, authorize(['teacher', 'coe', 'dean', 'regist
             course: subject
         });
 
-        // Map results back to emails
         const reverseMap = {};
         users.forEach(u => { reverseMap[u._id.toString()] = u.email; });
 
@@ -64,11 +59,9 @@ router.post('/batch-view', protect, authorize(['teacher', 'coe', 'dean', 'regist
     }
 });
 
-// 1. GET RESULTS (Student view)
 router.get('/:userId', protect, async (req, res) => {
     try {
         const userId = req.params.userId;
-        // Ensure user is fetching their own data or is higher role
         if (req.user._id.toString() !== userId && req.user.role === 'student') {
             return res.status(403).json({ message: 'Access denied' });
         }
@@ -106,11 +99,9 @@ router.get('/:userId', protect, async (req, res) => {
     }
 });
 
-// 2. BATCH UPDATE (Teacher/Registrar)
 router.post('/batch-update', protect, authorize(['teacher', 'dean', 'registrar']), async (req, res) => {
     try {
         const { records, subjectId } = req.body;
-        // records: [{ studentId, internal, external, ... }]
 
         const ops = records.map(rec => ({
             updateOne: {
@@ -127,7 +118,6 @@ router.post('/batch-update', protect, authorize(['teacher', 'dean', 'registrar']
     }
 });
 
-// 3. PUBLISH CONFIG
 router.post('/publish', protect, authorize(['dean', 'registrar']), async (req, res) => {
     try {
         const { deptId, batchId, semester, status } = req.body;

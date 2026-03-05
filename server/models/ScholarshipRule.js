@@ -11,8 +11,6 @@ const scholarshipRuleSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
-// Ensure no overlapping brackets per university/school could be complex, 
-// for now unique name per scope
 scholarshipRuleSchema.index({ university: 1, school: 1, minPercentage: 1 }, { unique: true });
 
 export default mongoose.model('ScholarshipRule', scholarshipRuleSchema);

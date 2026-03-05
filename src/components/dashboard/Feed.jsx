@@ -22,7 +22,6 @@ const PostCard = ({ post, onLike, onComment }) => {
 
     return (
         <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden mb-6 animate-in fade-in slide-in-from-bottom-4 duration-500 hover:shadow-md transition-all">
-            {/* Header */}
             <div className="p-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-slate-100 overflow-hidden border border-slate-100">
@@ -40,13 +39,11 @@ const PostCard = ({ post, onLike, onComment }) => {
                 </button>
             </div>
 
-            {/* Content */}
             <div className="px-6 pb-4">
                 <h3 className="text-lg font-black text-slate-800 mb-3 leading-tight">{post.title}</h3>
                 <p className="text-sm text-slate-600 font-medium leading-relaxed whitespace-pre-wrap">{post.content}</p>
             </div>
 
-            {/* Post Image */}
             {post.image && (
                 <div className="px-6 pb-6">
                     <div className="rounded-[2rem] overflow-hidden border border-slate-100 aspect-video bg-slate-50">
@@ -59,7 +56,6 @@ const PostCard = ({ post, onLike, onComment }) => {
                 </div>
             )}
 
-            {/* Interaction Bar */}
             <div className="px-6 py-4 border-t border-slate-50 flex items-center justify-between">
                 <div className="flex items-center gap-6">
                     <button
@@ -90,7 +86,6 @@ const PostCard = ({ post, onLike, onComment }) => {
                 </div>
             </div>
 
-            {/* Comments Section */}
             {showComments && (
                 <div className="bg-slate-50 p-6 space-y-4 animate-in slide-in-from-top-4 duration-300">
                     <div className="space-y-4">
@@ -115,7 +110,6 @@ const PostCard = ({ post, onLike, onComment }) => {
                         ))}
                     </div>
 
-                    {/* New Comment Input */}
                     <form onSubmit={handleComment} className="flex gap-4 pt-2">
                         <div className="w-8 h-8 rounded-xl bg-white shadow-sm shrink-0 overflow-hidden hidden sm:block">
                             <img src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} alt="Me" className="w-full h-full object-cover" />
@@ -218,7 +212,6 @@ export default function Feed() {
                 )}
             </div>
 
-            {/* Create Post Form */}
             {showCreate && (
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-xl mb-12 animate-in slide-in-from-top-8 duration-500 relative overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-1.5 bg-apollo-red"></div>

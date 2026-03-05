@@ -6,7 +6,6 @@ const announcementSchema = new mongoose.Schema({
     priority: { type: String, enum: ['low', 'medium', 'high', 'critical'], default: 'low' },
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 
-    // Scoping
     scope: { type: String, enum: ['global', 'university', 'school', 'department'], default: 'global' },
     university: { type: mongoose.Schema.Types.ObjectId, ref: 'University' },
     school: { type: mongoose.Schema.Types.ObjectId, ref: 'School' },

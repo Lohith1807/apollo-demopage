@@ -48,11 +48,8 @@ const FacultyDashboard = () => {
             }
 
             try {
-                // 1. Get all students to count total students taught
-                // We need to fetch students matching the batch/branch/sem of assigned subjects
                 const { data: allStudents } = await import('../../services/api').then(m => m.getStudents());
 
-                // Identify unique students in assigned classes
                 const uniqueEmails = new Set();
                 let totalCredits = 0;
 
@@ -64,21 +61,14 @@ const FacultyDashboard = () => {
                     );
                     classStudents.forEach(s => uniqueEmails.add(s.email));
 
-                    // Assume 3 credits per subject if not specified
                     totalCredits += (sub.credits || 3);
                 });
 
-                // 2. Calculate Live Attendance (Today's % across all classes)
-                // This is heavy, let's just do it for the FIRST subject for demo efficiency or just randomise slightly based on real data if possible?
-                // Better: Fetch today's batch attendance for all subjects
                 const today = new Date().toISOString().split('T')[0];
                 let totalPresent = 0;
                 let totalMarked = 0;
 
-                // We'll try to fetch for all assigned subjects
                 await Promise.all(assigned.map(async (sub) => {
-                    // We need a way to check attendance without fetching full student profiles again if possible
-                    // functionality exists in getBatchAttendance
                     const classStudents = allStudents.filter(s =>
                         s.batch === sub.batch &&
                         s.branch === sub.branch &&
@@ -93,7 +83,6 @@ const FacultyDashboard = () => {
                         students: emails
                     }));
 
-                    // Count
                     Object.values(attendanceData).forEach(status => {
                         if (status !== 'Not Marked') {
                             totalMarked++;
@@ -121,7 +110,6 @@ const FacultyDashboard = () => {
         fetchStats();
     }, [assigned]);
 
-    // Generate timeline from assigned subjects (Mocking time slots for demo)
     const timeline = assigned.slice(0, 4).map((sub, i) => ({
         time: i === 0 ? '09:00 AM' : (i === 1 ? '11:00 AM' : '02:00 PM'),
         duration: '60m',
@@ -134,7 +122,6 @@ const FacultyDashboard = () => {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 animate-in fade-in duration-500">
             <div className="lg:col-span-8 space-y-6">
-                {/* Faculty Context Bar */}
                 <div className="bg-slate-900 rounded-2xl p-4 flex items-center justify-between text-white shadow-xl">
                     <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center border border-white/20">
@@ -165,7 +152,6 @@ const FacultyDashboard = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Performance / Tasks List */}
                     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
                         <div className="px-4 border-b border-slate-100">
                             <WidgetHeader title="Pending Actions" action="View All" />
@@ -187,7 +173,6 @@ const FacultyDashboard = () => {
                         </div>
                     </div>
 
-                    {/* Class Registry */}
                     <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
                         <div className="px-4 border-b border-slate-100 flex items-center justify-between">
                             <WidgetHeader title="Class Registry" />

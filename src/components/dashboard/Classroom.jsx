@@ -122,18 +122,14 @@ export default function Classroom() {
     }, []);
 
     const findTeacher = (courseName) => {
-        // Search in faculty list for anyone assigned to this subject
         const teacher = faculty.find(f =>
             f.assignedSubjects?.some(s => s.subject === courseName)
         );
         return teacher ? { name: teacher.name, phone: teacher.phone || '9876543210' } : { name: 'Faculty Pending', phone: 'Contact HOD' };
     };
 
-    // Robust course derivation
     useEffect(() => {
         if (!loading && user?.role === 'teacher') {
-            // For teachers, we don't derive from "currentSem" property on user
-            // Instead we check assignedSubjects
         }
     }, [loading, user]);
 
@@ -143,12 +139,10 @@ export default function Classroom() {
         const assigned = user.assignedSubjects || [];
         rawSubjects = assigned.map(s => s.subject);
     } else {
-        // Strict filtering by Department (Branch) -> Specialization -> Semester
         const branchKey = user?.branch || user?.department || 'CSE';
         const specKey = user?.specialization || 'Core';
         let semKey = user?.semester || 'Sem 1';
 
-        // Map numerical sem to 'Sem N' format
         if (semKey === '1') semKey = 'Sem 1';
         if (semKey === '2') semKey = 'Sem 2';
         if (semKey === '3') semKey = 'Sem 3';
@@ -217,9 +211,7 @@ export default function Classroom() {
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Main Content: Materials & Discussion */}
                     <div className="lg:col-span-2 space-y-8">
-                        {/* Discussion / Announcements */}
                         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
                             <div className="p-6 border-b border-slate-100 flex justify-between items-center">
                                 <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Class Interaction</h3>
@@ -245,7 +237,6 @@ export default function Classroom() {
                             </div>
                         </div>
 
-                        {/* Materials Section */}
                         <div className="space-y-4">
                             <div className="flex items-center justify-between px-1">
                                 <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest">Lecture Materials</h3>
@@ -259,16 +250,13 @@ export default function Classroom() {
                         </div>
                     </div>
 
-                    {/* Sidebar: Assignments & Schedule */}
                     <div className="space-y-8">
-                        {/* Assignments */}
                         <div className="space-y-4">
                             <h3 className="text-xs font-black text-slate-800 uppercase tracking-widest px-1">Upcoming Assignments</h3>
                             <AssignmentCard title="First Term Paper" deadline="Tomorrow, 11:59 PM" status="Pending" />
                             <AssignmentCard title="Self Assessment" deadline="Feb 05, 05:00 PM" status="Submitted" />
                         </div>
 
-                        {/* Mini Timetable */}
                         <div className="bg-slate-900 rounded-2xl p-6 text-white space-y-6 shadow-xl relative overflow-hidden">
                             <div className="relative z-10">
                                 <h3 className="text-xs font-black uppercase tracking-widest opacity-60">Class Schedule</h3>

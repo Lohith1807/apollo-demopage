@@ -37,7 +37,6 @@ const SettingItem = ({ icon: Icon, label, value, color = "text-slate-500" }) => 
 export default function Settings() {
     return (
         <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-            {/* Benefits Header */}
             <div className="bg-slate-900 rounded-[2.5rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
                 <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
                     <div>
@@ -92,7 +91,6 @@ export default function Settings() {
                         <SettingItem icon={BarChart3} label="Compact Mode" value="Disabled" />
                     </SettingGroup>
 
-                    {/* Information about Benefits */}
                     <div className="bg-apollo-red p-8 rounded-3xl text-white shadow-xl shadow-red-500/20 relative overflow-hidden">
                         <HelpCircle className="absolute -bottom-4 -right-4 w-24 h-24 opacity-10" />
                         <h3 className="text-xl font-black uppercase tracking-tight mb-4">Why use settings?</h3>

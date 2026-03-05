@@ -6,7 +6,6 @@ import path from 'path';
 
 const router = express.Router();
 
-// Multer Config
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, 'uploads/posts/');
@@ -18,7 +17,6 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Get scoped posts
 router.get('/', async (req, res) => {
     try {
         const { schoolId, universityId, deptId } = req.query;
@@ -43,7 +41,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Create a post with hierarchy scoping
 router.post('/', upload.single('image'), async (req, res) => {
     try {
         const { title, content, email, scope, schoolId, departmentId } = req.body;
@@ -74,7 +71,6 @@ router.post('/', upload.single('image'), async (req, res) => {
     }
 });
 
-// Like a post
 router.post('/:id/like', async (req, res) => {
     try {
         const { email } = req.body;
@@ -95,7 +91,6 @@ router.post('/:id/like', async (req, res) => {
     }
 });
 
-// Comment on a post (Raise doubts/questions)
 router.post('/:id/comment', async (req, res) => {
     try {
         const { content, email } = req.body;

@@ -8,7 +8,6 @@ const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET || 'secret', { expiresIn: '30d' });
 };
 
-// Login
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -38,13 +37,11 @@ router.post('/login', async (req, res) => {
             email: userFound.email,
             role: userFound.role,
 
-            // Scalable Hierarchy
             university: userFound.university,
             school: userFound.school,
             department: userFound.department,
             batch: userFound.batch,
 
-            // Legacy display compatibility
             semester: userFound.semester,
             section: userFound.section,
             rollNo: userFound.rollNo || userFound.employeeId || 'N/A',
@@ -57,7 +54,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Signup (Submit for approval)
 router.post('/signup', async (req, res) => {
     const registrationData = req.body;
 

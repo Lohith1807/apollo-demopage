@@ -25,7 +25,6 @@ const seed = async () => {
         await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/apollo_db');
         console.log('--- SYSTEM RE-EVALUATION SEED START ---');
 
-        // 1. Core Hierarchy
         console.log('Setting up hierarchy...');
         const uni = await University.findOneAndUpdate(
             { name: 'The Apollo University' },
@@ -52,7 +51,6 @@ const seed = async () => {
         );
         console.log('Hierarchy OK.');
 
-        // 2. Scholarship Rules
         console.log('Seeding scholarship rules...');
         await ScholarshipRule.deleteMany({ university: uni._id });
         await ScholarshipRule.create([
@@ -61,7 +59,6 @@ const seed = async () => {
         ]);
         console.log('Scholarship Rules OK.');
 
-        // 3. Fee Structure for NEXT Semester (Semester 2)
         console.log('Seeding fee structure...');
         await FeeStructure.deleteMany({ school: school._id, semesterNumber: 2 });
         await FeeStructure.create({
@@ -77,7 +74,6 @@ const seed = async () => {
         });
         console.log('Fee Structure OK.');
 
-        // 4. Subjects for NEXT Semester
         console.log('Seeding subjects...');
         await Subject.deleteMany({ department: dept._id });
         await Subject.create([
@@ -86,7 +82,6 @@ const seed = async () => {
         ]);
         console.log('Subjects OK.');
 
-        // 5. Create Student and Sem 1 Results
         console.log('Creating student...');
         await User.deleteOne({ email: 'john.progress@apollo.edu' });
         const student = new User({
@@ -104,7 +99,6 @@ const seed = async () => {
         await student.save();
         console.log('Student OK.');
 
-        // Add 92% performance in Sem 1
         console.log('Adding exam results...');
         const mockCourseId = new mongoose.Types.ObjectId();
         await ExamResult.create([

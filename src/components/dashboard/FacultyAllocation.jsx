@@ -8,7 +8,6 @@ export default function FacultyAllocation() {
     const [selectedFaculty, setSelectedFaculty] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Form State
     const [newAlloc, setNewAlloc] = useState({
         batch: '2024-2028',
         branch: 'CSE',
@@ -38,7 +37,6 @@ export default function FacultyAllocation() {
 
     const handleSelectFaculty = (fac) => {
         setSelectedFaculty(fac);
-        // Reset form
         setNewAlloc({
             batch: '2024-2028',
             branch: 'CSE',
@@ -50,7 +48,6 @@ export default function FacultyAllocation() {
     const handleAddAllocation = async () => {
         if (!newAlloc.subject || !selectedFaculty) return;
 
-        // Check if already assigned
         const currentSubjects = selectedFaculty.assignedSubjects || [];
         const exists = currentSubjects.find(s =>
             s.subject === newAlloc.subject &&
@@ -67,7 +64,6 @@ export default function FacultyAllocation() {
 
         try {
             await updateFaculty(selectedFaculty.email, { assignedSubjects: updatedSubjects });
-            // Update local state
             const updatedFac = { ...selectedFaculty, assignedSubjects: updatedSubjects };
             setFaculty(faculty.map(f => f.email === selectedFaculty.email ? updatedFac : f));
             setSelectedFaculty(updatedFac);
@@ -84,7 +80,6 @@ export default function FacultyAllocation() {
         const updatedSubjects = selectedFaculty.assignedSubjects.filter((_, i) => i !== index);
         try {
             await updateFaculty(selectedFaculty.email, { assignedSubjects: updatedSubjects });
-            // Update local state
             const updatedFac = { ...selectedFaculty, assignedSubjects: updatedSubjects };
             setFaculty(faculty.map(f => f.email === selectedFaculty.email ? updatedFac : f));
             setSelectedFaculty(updatedFac);
@@ -93,15 +88,9 @@ export default function FacultyAllocation() {
         }
     };
 
-    // Helper to get subjects based on selection
     const availableSubjects = () => {
         if (!curriculum[newAlloc.branch]) return [];
-        // Default to first calc spec if not explicitly handled in simpler form
-        // For simplicity, let's assume 'Core' specialization for dropdown or merge all
-        // The curriculum structure is Branch -> Specialization -> Semester -> { theory: [], labs: [] }
 
-        // We need simplify selection for now, maybe just flattened list or require user to pick spec?
-        // Let's iterate all specs for the selected branch/sem to find subjects
         const specs = curriculum[newAlloc.branch];
         let subs = [];
         Object.values(specs).forEach(specData => {
@@ -115,7 +104,6 @@ export default function FacultyAllocation() {
 
     return (
         <div className="flex h-[calc(100vh-100px)] gap-6 animate-in fade-in duration-500">
-            {/* Left Sidebar: Faculty List */}
             <div className="w-1/3 bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
                 <div className="p-5 border-b border-slate-100 bg-slate-50/50">
                     <h3 className="text-xs font-black text-slate-800 uppercase tracking-[0.2em]">Faculty Directory</h3>
@@ -149,7 +137,6 @@ export default function FacultyAllocation() {
                 </div>
             </div>
 
-            {/* Right Panel: Allocation */}
             <div className="flex-1 bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
                 {selectedFaculty ? (
                     <>
@@ -166,7 +153,6 @@ export default function FacultyAllocation() {
                         </div>
 
                         <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-8 overflow-y-auto">
-                            {/* Add New Allocation */}
                             <div className="lg:col-span-1 space-y-4">
                                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200">
                                     <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -238,7 +224,6 @@ export default function FacultyAllocation() {
                                 </div>
                             </div>
 
-                            {/* Existing Allocations */}
                             <div className="lg:col-span-2">
                                 <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Current Workload</h4>
                                 {(!selectedFaculty.assignedSubjects || selectedFaculty.assignedSubjects.length === 0) ? (
