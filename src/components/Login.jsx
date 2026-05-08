@@ -329,7 +329,7 @@ export default function Login() {
                     <div className="bg-slate-50 px-10 py-4 flex justify-center items-center gap-2 opacity-60 grayscale hover:grayscale-0 transition-all">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Powered By</span>
                         <div className="h-4 w-[1px] bg-slate-300 mx-1"></div>
-                        <span className="text-[11px] font-black text-slate-500 tracking-tighter">Lohith <span className="text-apollo-red">Reddy</span></span>
+                        <span className="text-[11px] font-black text-slate-500 tracking-tighter">Lohith</span>
                     </div>
                 </div>
 
